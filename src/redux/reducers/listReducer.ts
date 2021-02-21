@@ -9,6 +9,8 @@ const listReducer = (
     case "removeCrypto":
       //return state.splice(state.indexOf(action.payload), 1);
       return [...state.filter(item => item !== action.payload)]
+      case "restoreCrypto":
+        return JSON.parse(action.payload)
     default:
       return state;
   }

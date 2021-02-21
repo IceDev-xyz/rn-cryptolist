@@ -11,3 +11,10 @@ export const removeCrypto = (coin: string) => {
     payload: coin,
   };
 };
+
+export const restoreCrypto = (local: string) =>{
+  return {
+    type: "restoreCrypto",
+    payload: local,
+  };
+}

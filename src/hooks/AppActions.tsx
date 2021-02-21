@@ -1,18 +1,29 @@
 import { useEffect, useContext, useState } from 'react';
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
 
 import { AppContext } from "./Context";
+import { restoreCrypto } from '../redux/actions';
 
 const AppActions = () => {
     const { context, setContext } = useContext(AppContext);
     const [appLaunch, setAppLaunch] = useState(true);
 
+    const dispatch = useDispatch();
+
     /** On launch we load user's list from Async Storage */
     useEffect(() => {
         if (appLaunch) {
-            console.log('Load from local');
-            setAppLaunch(false);
+            AsyncStorage
+                .getItem("@userCrypto")
+                .then((data) => {
+                    if (data != null){
+                        dispatch(restoreCrypto(data))
+                    }
+                }).finally(()=>{
+                    setAppLaunch(false);
+                })
         }
     }, [appLaunch])
 
@@ -41,7 +52,7 @@ const AppActions = () => {
             let currentDate = new Date();
             let timestamp = new Date(context.timestamp);
             let diffInSeconds = (currentDate.getTime() - timestamp.getTime()) / 1000;
-            if (!context.fetch && diffInSeconds > 120){
+            if (!context.fetch && diffInSeconds > 120) {
                 setContext((prevState: any) => {
                     prevState.fetch = true;
                     return { ...prevState };
@@ -53,13 +64,13 @@ const AppActions = () => {
             clearInterval(intervalId);
         }
 
-     }, [context])
+    }, [context])
 
 
     /** Every time user updates his/her list we save locally */
     const userCrypto = useSelector((state: any) => state.listReducer);
     useEffect(() => {
-        console.log("saveLocally")
+        AsyncStorage.setItem("@userCrypto", JSON.stringify(userCrypto));
     }, [userCrypto])
 
     return null;
