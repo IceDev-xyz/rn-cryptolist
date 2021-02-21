@@ -47,19 +47,19 @@ const AppActions = () => {
         }
     }, [context]);
 
-    /** Every 30 seconds, we verify if there hasn't been 2 minutes since last refresh, if so we trigger a reload */
+    /** Every 60 seconds, we verify if there hasn't passed 5 minutes since last refresh, if so we trigger a reload */
     useEffect(() => {
         const intervalId = setInterval(() => {
             let currentDate = new Date();
             let timestamp = new Date(context.timestamp);
             let diffInSeconds = (currentDate.getTime() - timestamp.getTime()) / 1000;
-            if (!context.fetch && diffInSeconds > 120) {
+            if (!context.fetch && diffInSeconds > 300) {
                 setContext((prevState: any) => {
                     prevState.fetch = true;
                     return { ...prevState };
                 });
             }
-        }, 30000)
+        }, 60000)
 
         return () => {
             clearInterval(intervalId);
@@ -68,7 +68,7 @@ const AppActions = () => {
     }, [context])
 
 
-    /** Every time user updates his/her list we save locally */
+    /** Every time user saves a currency we save locally */
     const userCrypto = useSelector((state: any) => state.listReducer);
     useEffect(() => {
         AsyncStorage.setItem("@userCrypto", JSON.stringify(userCrypto));

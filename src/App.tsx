@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import {LogBox} from "react-native";
 
 /* REDUX */
-/* Friends don't let friends use Redux */
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import allReducers from './redux/reducers'
@@ -18,13 +17,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Dashboard from "./screens/Dashboard";
 import AddCrypto from "./screens/AddCrypto";
-
-LogBox.ignoreLogs([
-  "Remote debugger",
-  "Warning:",
-  "VirtualizedLists should never be nested",
-  "Require cycle:",
-]);
 
 const Stack = createStackNavigator();
 const Store = createStore(allReducers);
@@ -54,3 +46,10 @@ const App = () => {
 };
 
 export default App;
+
+LogBox.ignoreLogs([
+  "Remote debugger",
+  "Warning:",
+  "VirtualizedLists should never be nested",
+  "Require cycle:",
+]);
