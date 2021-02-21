@@ -3,45 +3,34 @@ import {
   SafeAreaView,
   StyleSheet,
   ViewStyle,
-  ImageStyle,
-  TextStyle,
-  FlatList,
   ScrollView,
   View,
-  Text,
-  useWindowDimensions,
-  Modal,
-  Pressable,
-  Alert,
 } from "react-native";
-import { Avatar, Button, Header, Input, Icon, ListItem } from "react-native-elements";
+import { Avatar, Header, Input, Icon, ListItem } from "react-native-elements";
 import { AppContext } from "../hooks/Context";
 import { useSelector, useDispatch } from "react-redux";
 import { addCrypto, removeCrypto } from '../redux/actions'
 
-import { TextDivider } from "../components";
 import mainStyles, { colors } from "../styles";
 
 interface Styles {
   button: ViewStyle;
 }
 
-export default ({ navigation }) => {
+export default ({ navigation }: any) => {
   const dispatch = useDispatch();
   const { context } = useContext(AppContext);
   const [allCurrencies, setAllCurrencies] = useState([])
-  const [modalVisible, setModalVisible] = useState(false)
   const userCrypto = useSelector((state: any) => state.listReducer);
 
   useEffect(() => {
-    setAllCurrencies(context)
-  }, [context, modalVisible]);
+    setAllCurrencies(context.currencies)
+  }, [context]);
 
   const searchFilterFunction = (text: string) => {
-    let arrayToSearch = context;
-
-    const newData = arrayToSearch.filter((item) => {
-      let itemData = `${item.name.toUpperCase()}`;
+    let arrayToSearch = context.currencies;
+    const newData = arrayToSearch.filter((item: any) => {
+      let itemData = `${item.name.toUpperCase()}${item.symbol.toUpperCase()}`;
       let textData = text.toUpperCase();
       itemData = itemData
         .normalize("NFD")
@@ -65,79 +54,82 @@ export default ({ navigation }) => {
         containerStyle={mainStyles.headerContainer}
         centerContainerStyle={mainStyles.headerCenterContainer}
       />
-      <View
-        style={{
-          flex: 1,
-          paddingHorizontal: 10,
-          backgroundColor: colors.background,
-        }}
-      >
-        <Input
-          renderErrorMessage={false}
-          placeholder="Use a name or ticker symbol..."
-          autoCorrect={false}
-          leftIcon={{
-            name: "search",
-            color: colors.secondary,
+      <SafeAreaView style={{ flex: 1 }}>
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: 10,
+            backgroundColor: colors.background,
           }}
-          inputStyle={mainStyles.inputStyle}
-          inputContainerStyle={mainStyles.inputContainerStyle}
-          leftIconContainerStyle={mainStyles.inputIconStyle}
-          containerStyle={mainStyles.containerStyle}
-          onChangeText={(value: string) =>
-            searchFilterFunction(value)
-          }
-        />
-        <ScrollView keyboardShouldPersistTaps="always">
-          {allCurrencies.map((item: any) => (
-            <ListItem
-              key={item.id}
-              underlayColor={"transparent"}
-              containerStyle={{
-                paddingHorizontal: 0,
-                backgroundColor: "transparent",
-              }}
-              onPress={() => {
-                userCrypto.findIndex(
-                  (element: string) => element == item.id
-                ) === -1
-                  ? dispatch(addCrypto(item.id))
-                  : dispatch(removeCrypto(item.id))
-              }}
-            >
-              <Avatar source={{ uri: `https://messari.io/asset-images/${item.id}/64.png` }} />
-              <ListItem.Content>
-                <ListItem.Title
-                  style={{
-                    color: colors.cgpGrey[100],
-                    textTransform: "capitalize",
-                  }}
-                >
-                  {item.slug}
-                </ListItem.Title>
-              </ListItem.Content>
-              < Avatar
-                rounded
-                icon={{
-                  name: 'check', type: 'font-awesome', color: userCrypto.findIndex(
-                    (element: string) => element == item.id
-                  ) === -1
-                    ? colors.tertiary
-                    : colors.cgpGrey[100],
-                }}
-                activeOpacity={0.7}
+        >
+          <Input
+            renderErrorMessage={false}
+            placeholder="Use a name or ticker symbol..."
+            autoCorrect={false}
+            leftIcon={{
+              name: "search",
+              color: colors.secondary,
+            }}
+            inputStyle={mainStyles.inputStyle}
+            inputContainerStyle={mainStyles.inputContainerStyle}
+            leftIconContainerStyle={mainStyles.inputIconStyle}
+            containerStyle={mainStyles.containerStyle}
+            onChangeText={(value: string) =>
+              searchFilterFunction(value)
+            }
+          />
+          <ScrollView keyboardShouldPersistTaps="always">
+            {allCurrencies.map((item: any) => (
+              <ListItem
+                key={item.id}
+                underlayColor={"transparent"}
                 containerStyle={{
-                  backgroundColor: userCrypto.findIndex(
+                  paddingHorizontal: 0,
+                  backgroundColor: "transparent",
+                }}
+                onPress={() => {
+                  userCrypto.findIndex(
                     (element: string) => element == item.id
                   ) === -1
-                    ? colors.complementary
-                    : colors.primary,
+                    ? dispatch(addCrypto(item.id))
+                    : dispatch(removeCrypto(item.id))
                 }}
-              />
-            </ListItem>
-          ))}
-        </ScrollView>
-      </View>
+              >
+                <Avatar source={{ uri: `https://messari.io/asset-images/${item.id}/64.png` }} />
+                <ListItem.Content>
+                  <ListItem.Title
+                    style={{
+                      color: colors.cgpGrey[100],
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {item.slug}
+                  </ListItem.Title>
+                </ListItem.Content>
+                < Avatar
+                  rounded
+                  icon={{
+                    name: 'check', type: 'font-awesome', color: userCrypto.findIndex(
+                      (element: string) => element == item.id
+                    ) === -1
+                      ? colors.tertiary
+                      : colors.cgpGrey[100],
+                  }}
+                  activeOpacity={0.7}
+                  containerStyle={{
+                    backgroundColor: userCrypto.findIndex(
+                      (element: string) => element == item.id
+                    ) === -1
+                      ? colors.complementary
+                      : colors.primary,
+                  }}
+                />
+              </ListItem>
+            ))}
+          </ScrollView>
+        </View>
+      </SafeAreaView>
+
     </View>
   )
 

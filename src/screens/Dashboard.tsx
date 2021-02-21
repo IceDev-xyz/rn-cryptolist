@@ -15,9 +15,8 @@ import {
   Alert,
 } from "react-native";
 import { Avatar, Button, Header, Input, Icon, ListItem } from "react-native-elements";
-import { AppContext, FetchContext } from "../hooks/Context";
-import { useSelector, useDispatch } from "react-redux";
-import { addCrypto, removeCrypto } from '../redux/actions'
+import { AppContext } from "../hooks/Context";
+import { useSelector } from "react-redux";
 
 import { renderCrypto } from '../functions/Render'
 import { Divider } from "../components";
@@ -27,10 +26,16 @@ interface Styles {
   button: ViewStyle;
 }
 
-export default ({ navigation }) => {
-  const { context } = useContext(AppContext);
-  const { fetch, setFetch } = useContext(FetchContext);
+export default ({ navigation }: any) => {
+  const { context, setContext } = useContext(AppContext);
   const userCrypto = useSelector((state: any) => state.listReducer);
+
+  const setFetch = (bool: boolean) => {
+    setContext((prevState: any) => {
+      prevState.fetch = bool;
+      return { ...prevState };
+    });
+  }
 
   return (
     <View style={mainStyles.container}>
@@ -50,10 +55,10 @@ export default ({ navigation }) => {
           flex: 1,
           paddingHorizontal: 10,
         }}>
-          {context.length > 0 && (
+          {context.currencies.length > 0 && (
             <ScrollView refreshControl={
               <RefreshControl
-                refreshing={fetch}
+                refreshing={context.fetch}
                 onRefresh={() => setFetch(true)}
               />
             }>
