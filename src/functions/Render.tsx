@@ -23,7 +23,7 @@ export const renderCrypto = (item: string) => {
                 marginBottom: 5,
             }}
         >
-            <Avatar source={{ uri: `https://messari.io/asset-images/${item}/64.png` }} />
+            <Avatar placeholderStyle={{backgroundColor:'transparent'}} source={{ uri: `https://messari.io/asset-images/${item}/64.png` }} />
             <ListItem.Content>
                 <ListItem.Title style={mainStyles.listTitle}>{currency.name}</ListItem.Title>
                 <ListItem.Subtitle style={mainStyles.listSubtitle}>{currency.symbol}</ListItem.Subtitle>

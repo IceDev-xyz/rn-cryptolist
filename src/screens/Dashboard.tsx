@@ -4,17 +4,11 @@ import {
   StyleSheet,
   ViewStyle,
   RefreshControl,
-  TextStyle,
-  FlatList,
+  ActivityIndicator,
   ScrollView,
   View,
-  Text,
-  useWindowDimensions,
-  Modal,
-  Pressable,
-  Alert,
 } from "react-native";
-import { Avatar, Button, Header, Input, Icon, ListItem } from "react-native-elements";
+import { Button, Header } from "react-native-elements";
 import { AppContext } from "../hooks/Context";
 import { useSelector } from "react-redux";
 
@@ -41,10 +35,11 @@ export default ({ navigation }: any) => {
     <View style={mainStyles.container}>
       <Header
         barStyle="light-content"
-        leftComponent={{ icon: "refresh", color: "#fff", onPress: () => setFetch(true) }}
+        leftComponent={context.fetch ? <ActivityIndicator size={"small"} color={colors.secondary} /> : { icon: "refresh", color: "#fff", onPress: () => setFetch(true) }}
         centerComponent={{ text: "CryptoTrackerPro", style: mainStyles.headerTitle }}
         rightComponent={{ icon: "add", color: "#fff", onPress: () => navigation.navigate("AddCrypto") }}
         containerStyle={mainStyles.headerContainer}
+        leftContainerStyle={context.fetch && {paddingTop:2}}
         centerContainerStyle={mainStyles.headerCenterContainer}
       />
       <Divider />
@@ -58,7 +53,7 @@ export default ({ navigation }: any) => {
           {context.currencies.length > 0 && (
             <ScrollView refreshControl={
               <RefreshControl
-                refreshing={context.fetch}
+                refreshing={false}
                 onRefresh={() => setFetch(true)}
               />
             }>

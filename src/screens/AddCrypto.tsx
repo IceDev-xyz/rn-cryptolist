@@ -78,7 +78,7 @@ export default ({ navigation }: any) => {
               searchFilterFunction(value)
             }
           />
-          <ScrollView keyboardShouldPersistTaps="always">
+          <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="always" showsVerticalScrollIndicator={false}>
             {allCurrencies.map((item: any) => (
               <ListItem
                 key={item.id}
@@ -95,7 +95,7 @@ export default ({ navigation }: any) => {
                     : dispatch(removeCrypto(item.id))
                 }}
               >
-                <Avatar source={{ uri: `https://messari.io/asset-images/${item.id}/64.png` }} />
+                <Avatar placeholderStyle={{ backgroundColor: 'transparent' }} source={{ uri: `https://messari.io/asset-images/${item.id}/64.png` }} />
                 <ListItem.Content>
                   <ListItem.Title
                     style={{
