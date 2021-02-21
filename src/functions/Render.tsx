@@ -35,7 +35,7 @@ export const renderCrypto = (item: string) => {
                         name={currency.percent_24_hours > 0 ? "arrow-up-right" : "arrow-down-right"}
                         type='feather'
                         color={currency.percent_24_hours > 0 ? colors.success : colors.danger}
-                        size={20}
+                        size={16}
                     />
                     <ListItem.Subtitle style={[mainStyles.listSubtitle,{color:currency.percent_24_hours > 0 ? colors.success : colors.danger}]}>
                         {(currency.percent_24_hours).toLocaleString()} %</ListItem.Subtitle>
