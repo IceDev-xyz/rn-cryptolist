@@ -3,37 +3,86 @@ import {
   SafeAreaView,
   StyleSheet,
   ViewStyle,
-  ImageStyle,
+  RefreshControl,
   TextStyle,
+  FlatList,
   ScrollView,
   View,
   Text,
   useWindowDimensions,
   Modal,
+  Pressable,
+  Alert,
 } from "react-native";
-import { Header } from "react-native-elements";
+import { Avatar, Button, Header, Input, Icon, ListItem } from "react-native-elements";
+import { AppContext, FetchContext } from "../hooks/Context";
+import { useSelector, useDispatch } from "react-redux";
+import { addCrypto, removeCrypto } from '../redux/actions'
 
-import mainStyles, { colors } from "../styles/";
+import { renderCrypto } from '../functions/Render'
+import { Divider } from "../components";
+import mainStyles, { colors } from "../styles";
 
 interface Styles {
   button: ViewStyle;
 }
 
-export default ({ navigation, route }) => {
+export default ({ navigation }) => {
+  const { context } = useContext(AppContext);
+  const { fetch, setFetch } = useContext(FetchContext);
+  const userCrypto = useSelector((state: any) => state.listReducer);
+
   return (
     <View style={mainStyles.container}>
       <Header
         barStyle="light-content"
-        leftComponent={{ icon: 'menu', color: '#fff' }}
-        centerComponent={{ text: 'MY TITLE', style: { color: '#fff' } }}
-        rightComponent={{ icon: 'home', color: '#fff' }}
+        leftComponent={{ icon: "refresh", color: "#fff", onPress: () => setFetch(true) }}
+        centerComponent={{ text: "CryptoTrackerPro", style: mainStyles.headerTitle }}
+        rightComponent={{ icon: "add", color: "#fff", onPress: () => navigation.navigate("AddCrypto") }}
         containerStyle={mainStyles.headerContainer}
+        centerContainerStyle={mainStyles.headerCenterContainer}
       />
+      <Divider />
+      <SafeAreaView
+        style={{ flex: 1 }}
+      >
+        <View style={{
+          flex: 1,
+          paddingHorizontal: 10,
+        }}>
+          {context.length > 0 && (
+            <ScrollView refreshControl={
+              <RefreshControl
+                refreshing={fetch}
+                onRefresh={() => setFetch(true)}
+              />
+            }>
+              {userCrypto.map((item: string, i: number) => (
+                renderCrypto(item)
+              ))}
+              <Button
+                icon={{
+                  name: "add",
+                  size: 20,
+                  color: "white"
+                }}
+                title="Add a Cryptocurrency"
+                titleStyle={mainStyles.buttonTitle}
+                buttonStyle={styles.button}
+                onPress={() => navigation.navigate("AddCrypto")}
+              />
+            </ScrollView>
+          )}
+        </View>
+      </SafeAreaView>
     </View>
   )
+
 };
 const styles = StyleSheet.create<Styles>({
   button: {
-    backgroundColor: "red"
-  }
+    borderColor: colors.secondary,
+    backgroundColor: colors.secondary + '10',
+    borderRadius: 5,
+  },
 });

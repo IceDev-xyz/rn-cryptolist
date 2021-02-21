@@ -36,7 +36,7 @@ export default StyleSheet.create({
     justifyContent: "flex-start",
   },
   headerContainer: {
-    backgroundColor: colors.background,
+    backgroundColor: colors.secondary + "10",
     borderBottomColor: "transparent",
   },
   headerTitle: {
@@ -44,10 +44,62 @@ export default StyleSheet.create({
     textTransform: "uppercase",
     fontWeight: "600",
   },
+  headerCenterContainer:{
+    alignSelf:'center'
+  },
+  /////////////////////////////////////
+  // List Item
+  /////////////////////////////////////
+  listTitle: {
+    color: colors.cgpGrey[100],
+    fontSize: 14,
+    fontWeight: "500",
+    textTransform: "uppercase",
+  },
+  listSubtitle: {
+    fontSize: 11,
+    fontWeight: "400",
+    color: colors.cgpGrey[600],
+    textTransform: "uppercase",
+  },
+  /////////////////////////////////////
+  // Input
+  /////////////////////////////////////
+  containerStyle: {
+    marginVertical:10,
+    paddingLeft: 0,
+    paddingRight: 0,
+  },
+  inputContainerStyle: {
+    backgroundColor: colors.complementary+ "60",
+    borderBottomColor: "transparent",
+    borderRadius: 5,
+    marginBottom: 0,
+  },
+  inputIconStyle: {
+    width: 40,
+    marginLeft: 0,
+  },
+  inputStyle: {
+    fontSize: 15,
+    color: colors.cgpGrey[100],
+    textTransform: "uppercase",
+  },
+  inputLabel: {
+    fontSize: 15,
+    paddingLeft: 0,
+    marginBottom: 5,
+    color: colors.primary,
+    textTransform: "uppercase",
+    fontWeight: "600",
+  },
+  /////////////////////////////////////
+  // Other
+  /////////////////////////////////////
   buttonTitle: {
     color: colors.secondary,
     textTransform: "uppercase",
-    fontWeight: "600",
-    fontSize: 15,
+    fontWeight: "500",
+    fontSize: 12,
   },
 });
