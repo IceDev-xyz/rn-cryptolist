@@ -59,7 +59,7 @@ export default StyleSheet.create({
   listSubtitle: {
     fontSize: 12,
     fontWeight: "400",
-    color: colors.cgpGrey[600],
+    color: colors.tertiary,
     textTransform: "uppercase",
   },
   /////////////////////////////////////

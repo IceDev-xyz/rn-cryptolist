@@ -31,8 +31,9 @@ const AppActions = () => {
     useEffect(() => {
         if (context.fetch) {
             axios
-                .get(`https://data.messari.io/api/v2/assets?fields=id,name,slug,symbol,metrics%2Fmarket_data&with-metrics`)
+                .get(`https://data.messari.io/api/v2/assets?fields=id,name,slug,symbol,metrics%2Fmarket_data&with-metrics&limit=500`)
                 .then((response) => {
+                    console.log(response)
                     setContext((prevState: any) => {
                         prevState.currencies = response.data.data;
                         prevState.fetch = false;

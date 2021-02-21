@@ -22,6 +22,7 @@ interface Styles {
 
 export default ({ navigation }: any) => {
   const { context, setContext } = useContext(AppContext);
+  const [editMode, setEditMode] = useState(false);
   const userCrypto = useSelector((state: any) => state.listReducer);
 
   const setFetch = (bool: boolean) => {
@@ -37,7 +38,7 @@ export default ({ navigation }: any) => {
         barStyle="light-content"
         leftComponent={context.fetch ? <ActivityIndicator size={"small"} color={colors.secondary} /> : { icon: "refresh", color: "#fff", onPress: () => setFetch(true) }}
         centerComponent={{ text: "CryptoTrackerPro", style: mainStyles.headerTitle }}
-        rightComponent={{ icon: "add", color: "#fff", onPress: () => navigation.navigate("AddCrypto") }}
+        rightComponent={{ icon: "filter-variant-remove", type:"material-community", color: editMode ? colors.primary : colors.secondary, onPress: () => setEditMode(!editMode) }}
         containerStyle={mainStyles.headerContainer}
         leftContainerStyle={context.fetch && {paddingTop:2}}
         centerContainerStyle={mainStyles.headerCenterContainer}
@@ -58,7 +59,7 @@ export default ({ navigation }: any) => {
               />
             }>
               {userCrypto.map((item: string, i: number) => (
-                renderCrypto(item)
+                renderCrypto(item,editMode)
               ))}
               <Button
                 icon={{
@@ -69,7 +70,7 @@ export default ({ navigation }: any) => {
                 title="Add a Cryptocurrency"
                 titleStyle={mainStyles.buttonTitle}
                 buttonStyle={styles.button}
-                onPress={() => navigation.navigate("AddCrypto")}
+                onPress={() => [setEditMode(false), navigation.navigate("AddCrypto")]}
               />
             </ScrollView>
           )}

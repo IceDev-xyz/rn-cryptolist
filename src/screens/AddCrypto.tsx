@@ -5,6 +5,7 @@ import {
   ViewStyle,
   ScrollView,
   View,
+  FlatList,
 } from "react-native";
 import { Avatar, Header, Input, Icon, ListItem } from "react-native-elements";
 import { AppContext } from "../hooks/Context";
@@ -78,8 +79,13 @@ export default ({ navigation }: any) => {
               searchFilterFunction(value)
             }
           />
-          <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="always" showsVerticalScrollIndicator={false}>
-            {allCurrencies.map((item: any) => (
+          <FlatList
+            data={allCurrencies}
+            keyboardDismissMode="on-drag"
+            keyboardShouldPersistTaps="always"
+            showsVerticalScrollIndicator={false}
+            style={{ marginHorizontal: 5 }}
+            renderItem={({ item }: any) => (
               <ListItem
                 key={item.id}
                 underlayColor={"transparent"}
@@ -95,7 +101,7 @@ export default ({ navigation }: any) => {
                     : dispatch(removeCrypto(item.id))
                 }}
               >
-                <Avatar placeholderStyle={{ backgroundColor: 'transparent' }} source={{ uri: `https://messari.io/asset-images/${item.id}/64.png` }} />
+                <Avatar placeholderStyle={{ backgroundColor: 'transparent' }} source={{ uri: `https://messari.io/asset-images/${item.id}/32.png` }} />
                 <ListItem.Content>
                   <ListItem.Title
                     style={{
@@ -125,8 +131,10 @@ export default ({ navigation }: any) => {
                   }}
                 />
               </ListItem>
-            ))}
-          </ScrollView>
+
+            )}
+            keyExtractor={(item) => item}
+          />
         </View>
       </SafeAreaView>
 
